@@ -1,54 +1,69 @@
-var helicopterIMG, helicopterSprite, packageSprite,packageIMG;
-var packageBody,ground
 const Engine = Matter.Engine;
-const World = Matter.World;
+const World= Matter.World;
 const Bodies = Matter.Bodies;
-const Body = Matter.Body;
+const Constraint = Matter.Constraint;
 
-function preload()
-{
-	
+var engine, world;
+
+function preload(){
+
 }
 
 function setup() {
-	createCanvas(800, 700);
+  engine = Engine.create();
+  world = engine.world;
 
-
-	engine = Engine.create();
-	world = engine.world;
-
-	//Create the Bodies Here.
-	
-	ground = new Ground(400,500,width,10);
-
-	paper = new Paper(100,100,20,20);
-	box = new Dustbin(595,450,15,100);
-	box2 = new Dustbin(650,490,100,15);
-	box3 = new Dustbin(705,450,15,100);
-
-	Engine.run(engine);
-  
+  createCanvas(800, 400);
+  angleMode(DEGREES);
 }
-
 
 function draw() {
-  rectMode(CENTER);
-  background("black");
- 
+  background(0);
 
- 
-  paper.display();
-  box.display();
-  box2.display();
-  box3.display();
-  ground.display();
+  Engine.update(engine);
+
+  
+
+   hr = hour();
+   mn = minute();
+   sc = second();
+
+  scAngle = map(sc, 0, 60, 0, 360);
+  mnAngle = map(mn, 0, 60, 0, 360);
+  hrAngle = map(hr%12, 0, 12, 0, 360);
+
+  translate(200, 200);
+ rotate(-90);
+  push();
+  rotate(scAngle);
+  stroke("red");
+  strokeWeight(5);
+  line(0,0, 100, 0);
+  pop();
+
+  push();
+  rotate(mnAngle);
+  stroke(0, 255, 0);
+  strokeWeight(7);
+  line(0,0, 75, 0);
+  pop();
+
+  push();
+  rotate(hrAngle);
+  stroke("blue");
+  strokeWeight(9);
+  line(0,0, 50, 0);
+  pop();
+  stroke(255, 0, 255);
+  point(0,0);
+ strokeWeight(10);
+ noFill();
+  stroke(255, 0, 0);
+  arc(0,0, 300, 300, 0, scAngle);
+  stroke(0, 255, 0);
+  arc(0,0, 280, 280, 0, mnAngle);
+  stroke(0,0, 255);
+  arc(0,0, 260, 260, 0, hrAngle);
+
   drawSprites();
- 
 }
-keyPressed();
-function keyPressed(){
-	if (keyCode === UP_ARROW){
-		Matter.Body.applyForce(paper.body,paper.body.position,{x:0.04,y:-0.07});
-	}
-}
-
